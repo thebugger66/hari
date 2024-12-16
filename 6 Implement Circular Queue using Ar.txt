@@ -1,0 +1,105 @@
+6 Implement Circular Queue using Array. Perform following operations on it. 
+a) Insertion (Enqueue) 
+b) Deletion (Dequeue)
+c) Display
+
+#include <iostream>
+using namespace std;
+
+class CircularQueue {
+private:
+    int* array;
+    int front;
+    int rear;
+    int capacity;
+
+public:
+    // Constructor
+    CircularQueue(int size) {
+        capacity = size + 1; // One extra space for avoiding confusion between full and empty states
+        array = new int[capacity];
+        front = rear = 0;
+    }
+
+    // Destructor
+    ~CircularQueue() {
+        delete[] array;
+    }
+
+    // Function to check if the queue is empty
+    bool isEmpty() {
+        return front == rear;
+    }
+
+    // Function to check if the queue is full
+    bool isFull() {
+        return (rear + 1) % capacity == front;
+    }
+
+    // Function to enqueue (insert) an element
+    void enqueue(int value) {
+        if (isFull()) {
+            cout << "Queue is full. Cannot enqueue." << endl;
+            return;
+        }
+
+        array[rear] = value;
+        rear = (rear + 1) % capacity;
+    }
+
+    // Function to dequeue (delete) an element
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty. Cannot dequeue." << endl;
+            return;
+        }
+
+        front = (front + 1) % capacity;
+    }
+
+    // Function to display the elements in the queue
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty." << endl;
+            return;
+        }
+
+        int i = front;
+        cout << "Queue elements: ";
+        while (i != rear) {
+            cout << array[i] << " ";
+            i = (i + 1) % capacity;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    int size;
+    cout << "Enter the size of the Circular Queue: ";
+    cin >> size;
+
+    CircularQueue cq(size);
+
+    // Enqueue operations
+    cq.enqueue(1);
+    cq.enqueue(2);
+    cq.enqueue(3);
+    cq.display();
+
+    // Dequeue operation
+    cq.dequeue();
+    cq.display();
+
+    // Enqueue more elements
+    cq.enqueue(4);
+    cq.enqueue(5);
+    cq.display();
+
+    return 0;
+}
+Output
+Enter the size of the Circular Queue: 12
+Queue elements: 1 2 3 
+Queue elements: 2 3 
+Queue elements: 2 3 4 5
